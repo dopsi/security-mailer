@@ -1,0 +1,12 @@
+{
+	"mailer":{
+		"to": "to@example.com",
+		"from": "from@example.com",
+		"server": "example.com"
+	},
+	"output": {
+		"enable-all": true,
+		"enable-upgradable": true,
+		"enable-tree": true
+	}
+}
