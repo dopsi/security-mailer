@@ -1,0 +1,9 @@
+[Unit]
+Description=Execute security-mailer
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/security-mailer
+User=nobody
+Group=nobody
