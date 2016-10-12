@@ -74,11 +74,10 @@ def load_config():
                 config = json.load(config_file)
         except FileNotFoundError:
             pass
+        else:
+            return config
 
-    try:
-        return config
-    except NameError:
-        sys.exit(1)
+    sys.exit(1)
 
 def mailer():
     config = load_config()
