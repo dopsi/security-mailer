@@ -90,7 +90,7 @@ def mailer():
 
     # Send the mail
 
-    server = smtplib.SMTP(config['mailer']['server'])
+    server = smtplib.SMTP(host=config['mailer']['server']['hostname'], port=config['mailer']['server']['port'])
     server.sendmail(config['mailer']['from'], [config['mailer']['to']], content)
     server.quit()
 

@@ -2,7 +2,10 @@
 	"mailer":{
 		"to": "to@example.com",
 		"from": "from@example.com",
-		"server": "example.com"
+		"server": {
+			"hostname": "example.com",
+			"port": 587
+		}
 	},
 	"output": {
 		"enable-all": true,
