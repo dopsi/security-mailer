@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-from subprocess import run,PIPE
+from subprocess import run, PIPE
 
 import itertools
 from datetime import datetime
@@ -8,6 +8,7 @@ import json
 import sys
 import smtplib
 import string
+
 
 def printable_clean(s):
     rval = ''
@@ -19,12 +20,14 @@ def printable_clean(s):
             rval += '-'
     return rval
 
-def sort_uniq(sequence, forbidden=[]):
+
+def sort_uniq(sequence, forbidden=None):
     return (x[0] for x in itertools.groupby(sorted(sequence)) if x[0] not in forbidden)
 
+
 def gen_msg(config):
-    proc_all_pkg = run(['arch-audit','-q'], stdout=PIPE)
-    proc_up_pkg = run(['arch-audit','-q', '-u'], stdout=PIPE)
+    proc_all_pkg = run(['arch-audit', '-q'], stdout=PIPE)
+    proc_up_pkg = run(['arch-audit', '-q', '-u'], stdout=PIPE)
     
     packages_all = proc_all_pkg.stdout.decode('utf8').split('\n')
     packages_all = list(sort_uniq(packages_all, ['']))
@@ -49,7 +52,7 @@ def gen_msg(config):
         for i in packages_up:
             message += '* '+i+'\n'
 
-    if (len(packages_all)):
+    if len(packages_all):
         message += '\n'
         message += '# Vulnerable packages\n\n'
 
@@ -59,16 +62,17 @@ def gen_msg(config):
         message += '\n# Dependency trees for all packages\n\n'
 
         for i in packages_all:
-            proc_pkg = run(['pactree','-r',i], stdout=PIPE)
+            proc_pkg = run(['pactree', '-r', i], stdout=PIPE)
             message += printable_clean(proc_pkg.stdout.decode('utf8'))
             message += '\n'
 
     return message
 
+
 def load_config():
     config_files = ['config.json',
-            '$HOME/.config/security-mailer/config.json',
-            '/etc/security-mailer/config.json']
+                    '$HOME/.config/security-mailer/config.json',
+                    '/etc/security-mailer/config.json']
 
     for i in config_files:
         try:
@@ -80,6 +84,7 @@ def load_config():
             return config
 
     sys.exit(1)
+
 
 def mailer():
     config = load_config()
@@ -96,4 +101,3 @@ def mailer():
 
 if __name__ == '__main__':
     mailer()
-
